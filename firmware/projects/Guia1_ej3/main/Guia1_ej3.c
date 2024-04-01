@@ -49,70 +49,69 @@ void controlLeds (struct leds *led)
 {
 	switch (led->mode)
 	{
-		printf("entre al primer switch");
 		case ON:
 			switch (led->n_led)
 			{
-				case 1:
+				case LED_1:
 					LedOn(LED_1);
 					printf("Led 1 encendido");
 				break;
-				case 2:
+				case LED_2:
 					LedOn(LED_2);
 					printf("Led 2 encendido");
 				break;
-				case 3:
+				case LED_3:
 					LedOn(LED_3);
 					printf("Led 3 encendido");
 				break;
 			default:
 				break;
-		}
+			}
+		break;
 		case OFF:
 			switch (led->n_led)
 			{
-				case 1:
+				case LED_1:
 					LedOff(LED_1);
 					printf("Led 1 apagado");
 				break;
-				case 2:
+				case LED_2:
 					LedOff(LED_2);
 					printf("Led 2 apagado");
 				break;
-				case 3:
+				case LED_3:
 					LedOff(LED_3);
 					printf("Led 3 apagado");
 				break;
 			default:
 				break;
 			}
+		break;
 		case TOGGLE:
 			i = 0;
-			while (i < led->n_ciclos){
+			while (i < led->n_ciclos)
+			{
 				switch (led->n_led)
 				{
-					case 1:
+					case LED_1:
 						LedToggle(LED_1);
 						i++;
 					break;
-					case 2:
+					case LED_2:
 						LedToggle(LED_2);
 						i++;
 					break;
-					case 3:
+					case LED_3:
 						LedToggle(LED_3);
 						i++;
 					break;
 				default:
 					break;
+				
 				}
-				/*while (j < led->periodo)
-				{
-					j++;
-					vTaskDelay(j)
-				}*/
 				vTaskDelay(led->periodo / portTICK_PERIOD_MS);
-		}			
+			}
+		break;			
 	default:
 		break;
 	}
@@ -120,13 +119,16 @@ void controlLeds (struct leds *led)
 /*==================[external functions definition]==========================*/
 void app_main(void)
 {
-	while(1)    {
-		LedsInit();			//Todos los perifericos que yo utilice se inicializan en el main una sola vez
-		my_leds.mode = ON;
-		my_leds.n_led = 1;
+	LedsInit();				//Todos los perifericos que yo utilice se inicializan en el main una sola vez
+	my_leds.mode = TOGGLE;
+	my_leds.n_led = LED_1;
+	my_leds.n_ciclos = 10;
+	my_leds.periodo = 500;
 
-		controlLeds(&my_leds);
-		vTaskDelay(1000);
+	controlLeds(&my_leds);
+	while(1)    
+	{
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
 	 }
 }
 /*==================[end of file]============================================*/
