@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "gpio_mcu.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 /*==================[macros and definitions]=================================*/
 
 /*==================[internal data definition]===============================*/
@@ -46,11 +48,11 @@ void cambioEstadoGPIO(uint8_t digitoBCD, gpioConf_t *vecGPIO)
         mascara = mascara << i;
         if ((digitoBCD & mascara) != 0)
         {
-			//printf("Setear\n");
+			printf("Setear\n");
 			GPIOOn(vecGPIO[3-i].pin);
         }
         else
-            //printf ("No setear\n");
+            printf ("No setear\n");
 			GPIOOff(vecGPIO[3-i].pin);
     }
 }
@@ -63,7 +65,7 @@ void app_main(void)
 	vecBits[1].pin = GPIO_21;
 	vecBits[2].pin = GPIO_22;
 	vecBits[3].pin = GPIO_23;
-	vecBits[0].dir = vecBits[1].dir = vecBits[2].dir = vecBits[3].dir = 1;
+	vecBits[0].dir = vecBits[1].dir = vecBits[2].dir = vecBits[3].dir = GPIO_OUTPUT;
 
 	uint8_t dBCD = 0b0101;   
 	
@@ -74,5 +76,10 @@ void app_main(void)
 	}
 	 				
 	cambioEstadoGPIO(dBCD, vecBits);
+
+	while(1)    
+	{
+		vTaskDelay(2000 / portTICK_PERIOD_MS);
+	 }
 }
 /*==================[end of file]============================================*/

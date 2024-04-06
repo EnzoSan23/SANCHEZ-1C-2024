@@ -1,10 +1,10 @@
-/*! @mainpage Template
+/*! @mainpage Primer Proyecto
  *
  * @section genDesc General Description
  *
- * This section describes how the program works.
- *
- * <a href="https://drive.google.com/...">Operation Example</a>
+ * La aplicación permite mostrar en un display LCD "CD4543", 
+ * un numero de 3 cifras ingresado previamente.
+ * Esto se realiza mediante el uso de diferntes GPIO de la placa ESP32-C6-DevKitC-1.
  *
  * @section hardConn Hardware Connection
  *
@@ -27,17 +27,26 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "gpio_mcu.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+
 /*==================[macros and definitions]=================================*/
-#define duracionPulso 0.00005	//50 nanosegundos
-/*==================[internal data definition]===============================*/
+
+/** @def gpioConf_t
+ *  @brief Estructura que define la configuracion de un GPIO
+ */
 typedef struct
 {
-gpio_t pin; 		/*!< GPIO pin number */
-io_t dir; 			/*!< GPIO direction '0' IN; '1' OUT*/
+	gpio_t pin; 		/*!< GPIO pin number */
+	io_t dir; 			/*!< GPIO direction '0' IN; '1' OUT*/
 } gpioConf_t;
+/*==================[internal data definition]===============================*/
+
 /*==================[internal functions declaration]=========================*/
+
+/** @fn void  convertToBcdArray (uint32_t data, uint8_t digits, uint8_t * bcd_number)
+ *  @brief Carga un vector con numeros BCD correspondientes a un numero decimal con una determinada cantidad de digitos
+ * 	@param [data, digits, bcd_number]
+ *  @return
+*/
 void  convertToBcdArray (uint32_t data, uint8_t digits, uint8_t * bcd_number)
 {	
 	int8_t i = 0;
@@ -49,47 +58,57 @@ void  convertToBcdArray (uint32_t data, uint8_t digits, uint8_t * bcd_number)
 	}
 }
 
+/** @fn void cambioEstadoGPIO(uint8_t digitoBCD, gpioConf_t *vecGPIO)
+ *  @brief Cambia el estado de un GPIO dependiendo de los digitos de un numero binario BCD
+ * 	@param [digitoBCD, vecGPIO]
+ *  @return
+*/
 void cambioEstadoGPIO(uint8_t digitoBCD, gpioConf_t *vecGPIO)
-{
-	uint8_t mascara;
-
+{	
 	for (int i = 0; i < 4; i++)
     {
-        mascara = 1;
-        mascara = mascara << i;
-        if ((digitoBCD & mascara) != 0)
+        if (digitoBCD & (1 << i))
         {
-			//printf("Setear\n");
-			GPIOOn(vecGPIO[3-i].pin);
+			printf("Setear\n");
+			GPIOOn(vecGPIO[i].pin);
         }
         else
-            //printf ("No setear\n");
-			GPIOOff(vecGPIO[3-i].pin);
+            printf ("No setear\n");
+			GPIOOff(vecGPIO[i].pin);
     }
+}
+
+/** @fn void mostrarDisplay(uint32_t dato, uint8_t dig, gpioConf_t *vecB, gpioConf_t *vecP)
+ *  @brief Muestra el dato cargado en el display LCD, integrando las funciones covertToBcdArray y cambioEstadoGPIO, junto con la activacion de los GPIO que seleccionan los puertos del display 
+ * 	@param [dato, dig, vecB, vecP]
+ *  @return
+*/
+void mostrarDisplay(uint32_t dato, uint8_t dig, gpioConf_t *vecB, gpioConf_t *vecP)
+{
+
+	uint8_t vecBCD[dig];
+	convertToBcdArray(dato, dig, vecBCD);
+
+	for (int i = 0; i < dig; i++)
+	{
+		cambioEstadoGPIO(vecBCD[i], vecB);
+		GPIOOn(vecP[i].pin);
+		GPIOOff(vecP[i].pin);
+	}
 }
 /*==================[external functions definition]==========================*/
 void app_main(void)
 {
-	uint32_t valor = 258;
+	uint32_t valor = 138;
 	uint8_t digitos = 3;
-	uint8_t vecBCD[digitos];
 
 	//Defino el vector que mapea los bits
-	gpioConf_t vecBits [4];
-	vecBits[0].pin = GPIO_20;
-	vecBits[1].pin = GPIO_21;
-	vecBits[2].pin = GPIO_22;
-	vecBits[3].pin = GPIO_23;
-	vecBits[0].dir = vecBits[1].dir = vecBits[2].dir = vecBits[3].dir = 1;
+	gpioConf_t vecBits [4] = {{GPIO_20, GPIO_OUTPUT}, {GPIO_21, GPIO_OUTPUT}, {GPIO_22, GPIO_OUTPUT}, {GPIO_23, GPIO_OUTPUT}};
 
 	//Defino el vector que mapea los puertos
-	gpioConf_t vecPuertos [3];
-	vecPuertos[0].pin = GPIO_19;
-	vecPuertos[1].pin = GPIO_18;
-	vecPuertos[2].pin = GPIO_9;
-	vecPuertos[0].dir = vecPuertos[1].dir = vecPuertos[2].dir = 1;
+	gpioConf_t vecPuertos [3] = {{GPIO_19, GPIO_OUTPUT}, {GPIO_18, GPIO_OUTPUT}, {GPIO_9, GPIO_OUTPUT}};
 	
-//Inicializo los GPIO
+	//Inicializo los GPIO
 	for (int i = 0; i < 4; i++)
 	{
 		GPIOInit(vecBits[i].pin, vecBits[i].dir);
@@ -99,14 +118,7 @@ void app_main(void)
 		GPIOInit(vecPuertos[i].pin, vecPuertos[i].dir);
 	}
 
-	convertToBcdArray(valor, digitos, vecBCD);		//Convierto el valor a numeros BCD
-	for (int i = 0; i < digitos; i++)				//Para cada BCD, cargo los bits de entrada del conversor
-	{
-		cambioEstadoGPIO(vecBCD[i], vecBits);
-		GPIOOn(vecPuertos[i].pin);					//Como envio el pulso de 50ns?
-		vTaskDelay(duracionPulso / portTICK_PERIOD_MS);
-		GPIOOff(vecPuertos[i].pin);
-	}
-
+	//Muestro el valor enviado por display
+	mostrarDisplay(valor, digitos, vecBits, vecPuertos);
 }
 /*==================[end of file]============================================*/

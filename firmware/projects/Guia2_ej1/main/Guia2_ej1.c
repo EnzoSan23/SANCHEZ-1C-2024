@@ -34,7 +34,7 @@ static void Led1Task(void *pvParameter){
     while(true){
         printf("LED_1 ON\n");
         LedOn(LED_1);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_1 / portTICK_PERIOD_MS);     //Le doy tiempo al scheduler "suspendiendo" la tarea, para que asigne ese tiempo a otra tarea
+        vTaskDelay(CONFIG_BLINK_PERIOD_LED_1 / portTICK_PERIOD_MS);
         printf("LED_1 OFF\n");
         LedOff(LED_1);
         vTaskDelay(CONFIG_BLINK_PERIOD_LED_1 / portTICK_PERIOD_MS);
@@ -64,8 +64,8 @@ static void Led3Task(void *pvParameter){
 }
 /*==================[external functions definition]==========================*/
 void app_main(void){
-    LedsInit();                                                         //Se ejecuta una sola vez para luego dar inicio al scheduler
-    xTaskCreate(&Led1Task, "LED_1", 512, NULL, 5, &led1_task_handle);   //xTaskCreate es una funcion del KERNEL que crea una tarea
+    LedsInit();
+    xTaskCreate(&Led1Task, "LED_1", 512, NULL, 5, &led1_task_handle);
     xTaskCreate(&Led2Task, "LED_2", 512, NULL, 5, &led2_task_handle);
     xTaskCreate(&Led3Task, "LED_3", 512, NULL, 5, &led3_task_handle);
 }
