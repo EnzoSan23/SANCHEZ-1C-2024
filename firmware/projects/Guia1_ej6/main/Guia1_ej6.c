@@ -67,13 +67,11 @@ void cambioEstadoGPIO(uint8_t digitoBCD, gpioConf_t *vecGPIO)
 {	
 	for (int i = 0; i < 4; i++)
     {
-        if (digitoBCD & (1 << i))
+        if (digitoBCD & 1 << i)
         {
-			printf("Setear\n");
 			GPIOOn(vecGPIO[i].pin);
         }
         else
-            printf ("No setear\n");
 			GPIOOff(vecGPIO[i].pin);
     }
 }
