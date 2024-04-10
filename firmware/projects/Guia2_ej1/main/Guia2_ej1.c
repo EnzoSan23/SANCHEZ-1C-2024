@@ -3,7 +3,7 @@
  * \section genDesc General Description
  *
  * This example makes LED_1, LED_2 and LED_3 blink at different rates, using FreeRTOS tasks.
- * 
+ *
  * @section changelog Changelog
  *
  * |   Date	    | Description                                    |
@@ -21,51 +21,113 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "led.h"
+#include "hc_sr04.h"
+#include "lcditse0803.h"
+#include "switch.h"
 /*==================[macros and definitions]=================================*/
-#define CONFIG_BLINK_PERIOD_LED_1 1000
-#define CONFIG_BLINK_PERIOD_LED_2 1500
-#define CONFIG_BLINK_PERIOD_LED_3 500
+#define TASA_REFRESCO_LENTO 1000
+#define TASA_REFRESCO_RAPIDO 10
+#define ECHO GPIO_3
+#define TRIGGER GPIO_2
+
 /*==================[internal data definition]===============================*/
-TaskHandle_t led1_task_handle = NULL;
-TaskHandle_t led2_task_handle = NULL;
-TaskHandle_t led3_task_handle = NULL;
+// TaskHandle_t led1_task_handle = NULL;
+// TaskHandle_t led2_task_handle = NULL;
+// TaskHandle_t led3_task_handle = NULL;
+
+uint32_t distancia;
+uint8_t tecla;
+bool encendido = false;
+bool hold = false;
 /*==================[internal functions declaration]=========================*/
-static void Led1Task(void *pvParameter){
-    while(true){
-        printf("LED_1 ON\n");
-        LedOn(LED_1);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_1 / portTICK_PERIOD_MS);
-        printf("LED_1 OFF\n");
+void controlLEDs()
+{
+    if (distancia < 10)
+    {
         LedOff(LED_1);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_1 / portTICK_PERIOD_MS);
-    }
-}
-
-static void Led2Task(void *pvParameter){
-    while(true){
-        printf("LED_2 ON\n");
-        LedOn(LED_2);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_2 / portTICK_PERIOD_MS);
-        printf("LED_2 OFF\n");
         LedOff(LED_2);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_2 / portTICK_PERIOD_MS);
+        LedOff(LED_3);
+    }
+    else if (10 <= distancia && distancia <= 20)
+    {
+        LedOn(LED_1);
+        LedOff(LED_2);
+        LedOff(LED_3);
+    }
+    else if (20 <= distancia && distancia <= 30)
+    {
+        LedOn(LED_1);
+        LedOn(LED_2);
+        LedOff(LED_3);
+    }
+    else if (30 < distancia)
+    {
+        LedOn(LED_1);
+        LedOn(LED_2);
+        LedOn(LED_3);
     }
 }
 
-static void Led3Task(void *pvParameter){
-    while(true){
-        printf("LED_3 ON\n");
-        LedOn(LED_3);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_3 / portTICK_PERIOD_MS);
-        printf("LED_3 OFF\n");
-        LedOff(LED_3);
-        vTaskDelay(CONFIG_BLINK_PERIOD_LED_3 / portTICK_PERIOD_MS);
+static void medirDistancia(void *pvParameter) // Primer tarea: medir distancia
+{
+    while (true)
+    {
+        if (encendido)
+        {
+            distancia = HcSr04ReadDistanceInCentimeters();
+            // printf("\nDisntacia: %u", distancia);
+        }
+        vTaskDelay(TASA_REFRESCO_LENTO / portTICK_PERIOD_MS);
+    }
+}
+
+static void mostrarDisplay(void *pvParameter) // Segunda tarea: mostrar informacion
+{
+    while (true)
+    {
+        if (encendido)
+        {
+            controlLEDs();
+            if (!hold)
+            {
+                LcdItsE0803Write(distancia);
+            }
+        }
+        else
+        {
+            LedsOffAll();
+            LcdItsE0803Off();
+        }
+        vTaskDelay(TASA_REFRESCO_LENTO / portTICK_PERIOD_MS);
+    }
+}
+
+static void controlTeclas(void *pvParameter) // Tercer tarea: control de teclas
+{
+    while (true)
+    {
+        tecla = SwitchesRead();
+        switch (tecla)
+        {
+        case SWITCH_1:
+            encendido = !encendido;
+            break;
+        case SWITCH_2:
+            hold = !hold;
+            break;
+        }
+        vTaskDelay(TASA_REFRESCO_RAPIDO / portTICK_PERIOD_MS);
     }
 }
 /*==================[external functions definition]==========================*/
-void app_main(void){
+void app_main(void)
+{
     LedsInit();
-    xTaskCreate(&Led1Task, "LED_1", 512, NULL, 5, &led1_task_handle);
-    xTaskCreate(&Led2Task, "LED_2", 512, NULL, 5, &led2_task_handle);
-    xTaskCreate(&Led3Task, "LED_3", 512, NULL, 5, &led3_task_handle);
+    HcSr04Init(ECHO, TRIGGER);
+    LcdItsE0803Init();
+    SwitchesInit();
+
+    xTaskCreate(&medirDistancia, "REGLA", 512, NULL, 5, NULL);
+    xTaskCreate(&mostrarDisplay, "DISPLAY", 512, NULL, 5, NULL);
+    xTaskCreate(&controlTeclas, "TECLA", 512, NULL, 5, NULL);
 }
