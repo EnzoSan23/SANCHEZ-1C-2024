@@ -8,9 +8,9 @@
  *
  * |   Date	    | Description                                    |
  * |:----------:|:-----------------------------------------------|
- * | 12/09/2023 | Document creation		                         |
+ * | 10/04/2023 | Document creation		                         |
  *
- * @author Albano Peñalva (albano.penalva@uner.edu.ar)
+ * @author Enzo Sanchez (enzo.sanchez@ingenieria.uner.edu.ar)
  *
  */
 
@@ -24,22 +24,42 @@
 #include "hc_sr04.h"
 #include "lcditse0803.h"
 #include "switch.h"
+#include "timer_mcu.h"
 /*==================[macros and definitions]=================================*/
-#define TASA_REFRESCO_LENTO 1000
-#define TASA_REFRESCO_RAPIDO 10
+#define TASA_REFRESCO_DISPLAY 1000000
+#define TASA_REFRESCO_LEDS 1000000
 #define ECHO GPIO_3
 #define TRIGGER GPIO_2
 
 /*==================[internal data definition]===============================*/
-// TaskHandle_t led1_task_handle = NULL;
-// TaskHandle_t led2_task_handle = NULL;
-// TaskHandle_t led3_task_handle = NULL;
+TaskHandle_t display_task_handle = NULL;
+// TaskHandle_t leds_task_handle = NULL;
 
 uint32_t distancia;
 uint8_t tecla;
 bool encendido = false;
 bool hold = false;
 /*==================[internal functions declaration]=========================*/
+void FuncTimerA(void* param)
+{
+    xTaskNotifyGive(display_task_handle);    /* Envía una notificación a la tarea asociada al display */
+}
+
+// void FuncTimerB(void* param)
+// {
+//     xTaskNotifyGive(leds_task_handle);    /* Envía una notificación a la tarea asociada al control de LEDs */
+// }
+
+void controlEncendido()
+{
+    encendido = !encendido;
+}
+
+void controlHold()
+{
+    hold = !hold;
+}
+
 void controlLEDs()
 {
     if (distancia < 10)
@@ -72,12 +92,13 @@ static void medirDistancia(void *pvParameter) // Primer tarea: medir distancia
 {
     while (true)
     {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         if (encendido)
         {
             distancia = HcSr04ReadDistanceInCentimeters();
             // printf("\nDisntacia: %u", distancia);
         }
-        vTaskDelay(TASA_REFRESCO_LENTO / portTICK_PERIOD_MS);
+        //vTaskDelay(TASA_REFRESCO_LENTO / portTICK_PERIOD_MS);
     }
 }
 
@@ -85,6 +106,7 @@ static void mostrarDisplay(void *pvParameter) // Segunda tarea: mostrar informac
 {
     while (true)
     {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         if (encendido)
         {
             controlLEDs();
@@ -98,36 +120,56 @@ static void mostrarDisplay(void *pvParameter) // Segunda tarea: mostrar informac
             LedsOffAll();
             LcdItsE0803Off();
         }
-        vTaskDelay(TASA_REFRESCO_LENTO / portTICK_PERIOD_MS);
+        //vTaskDelay(TASA_REFRESCO_LENTO / portTICK_PERIOD_MS);
     }
 }
 
-static void controlTeclas(void *pvParameter) // Tercer tarea: control de teclas
-{
-    while (true)
-    {
-        tecla = SwitchesRead();
-        switch (tecla)
-        {
-        case SWITCH_1:
-            encendido = !encendido;
-            break;
-        case SWITCH_2:
-            hold = !hold;
-            break;
-        }
-        vTaskDelay(TASA_REFRESCO_RAPIDO / portTICK_PERIOD_MS);
-    }
-}
+// static void controlTeclas(void *pvParameter) // Tercer tarea: control de teclas
+// {
+//     while (true)
+//     {
+//         tecla = SwitchesRead();
+//         switch (tecla)
+//         {
+//         case SWITCH_1:
+//             encendido = !encendido;
+//             break;
+//         case SWITCH_2:
+//             hold = !hold;
+//             break;
+//         }
+//         vTaskDelay(10 / portTICK_PERIOD_MS);
+//     }
+// }
 /*==================[external functions definition]==========================*/
 void app_main(void)
 {
+    timer_config_t timer_display = {
+        .timer = TIMER_A,
+        .period = TASA_REFRESCO_DISPLAY,
+        .func_p = FuncTimerA,
+        .param_p = NULL
+    };
+    TimerInit(&timer_display);
+    // timer_config_t timer_leds = {
+    //     .timer = TIMER_B,
+    //     .period = TASA_REFRESCO_LEDS,
+    //     .func_p = FuncTimerB,
+    //     .param_p = NULL
+    // };
+    // TimerInit(&timer_leds);
+
     LedsInit();
     HcSr04Init(ECHO, TRIGGER);
     LcdItsE0803Init();
     SwitchesInit();
 
-    xTaskCreate(&medirDistancia, "REGLA", 512, NULL, 5, NULL);
-    xTaskCreate(&mostrarDisplay, "DISPLAY", 512, NULL, 5, NULL);
-    xTaskCreate(&controlTeclas, "TECLA", 512, NULL, 5, NULL);
+    SwitchActivInt(SWITCH_1, controlEncendido, NULL);
+    SwitchActivInt(SWITCH_2, controlHold, NULL);
+    xTaskCreate(&medirDistancia, "REGLA", 512, NULL, 5, &display_task_handle);
+    xTaskCreate(&mostrarDisplay, "DISPLAY", 512, NULL, 5, &display_task_handle);
+    //xTaskCreate(&controlTeclas, "TECLA", 512, NULL, 5, NULL); //Cambiar por interrupciones
+
+    TimerStart(timer_display.timer);
+    //TimerStart(timer_leds.timer);
 }
