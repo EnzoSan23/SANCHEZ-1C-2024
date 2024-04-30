@@ -132,4 +132,9 @@ void app_main(void)
     HcSr04Init(ECHO, TRIGGER);
     LcdItsE0803Init();
     SwitchesInit();
+
+    xTaskCreate(&medirDistancia, "REGLA", 512, NULL, 5, NULL);
+    xTaskCreate(&mostrarDisplay, "DISPLAY", 512, NULL, 5, NULL);
+    xTaskCreate(&controlTeclas, "TECLA", 512, NULL, 5, NULL); 
+
 }
