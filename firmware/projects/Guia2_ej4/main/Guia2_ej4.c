@@ -89,6 +89,7 @@ static void generarECG(void* param)
         if (i < BUFFER_SIZE)
         {
             AnalogOutputWrite(ecg[i]);
+            i++;
         }
         else
         {
