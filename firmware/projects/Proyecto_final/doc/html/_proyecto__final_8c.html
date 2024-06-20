@@ -1,0 +1,535 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.10.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Proyecto final EP: Referencia del archivo C:/Repositorio/SANCHEZ-1C-2024/firmware/projects/Proyecto_final/main/Proyecto_final.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+  $(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="fiuner.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">Proyecto final EP<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Aplicación para dosimetría de líquidos</div>
+  </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
+          <input type="text" id="MSearchField" value="" placeholder="Buscar" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.10.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('_proyecto__final_8c.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">defines</a> &#124;
+<a href="#func-members">Funciones</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo Proyecto_final.c</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
+<code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
+<code>#include &quot;freertos/task.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="uart__mcu_8h_source.html">uart_mcu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="timer__mcu_8h_source.html">timer_mcu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="analog__io__mcu_8h_source.html">analog_io_mcu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="servo__sg90_8h_source.html">servo_sg90.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="neopixel__stripe_8h_source.html">neopixel_stripe.h</a>&quot;</code><br />
+<code>#include &quot;ble_mcu.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="led_8h_source.html">led.h</a>&quot;</code><br />
+</div>
+<p><a href="_proyecto__final_8c_source.html">Ir al código fuente de este archivo.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+defines</h2></td></tr>
+<tr class="memitem:a0c6c965acdc2ee0b17946f26f1b8d048" id="r_a0c6c965acdc2ee0b17946f26f1b8d048"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c6c965acdc2ee0b17946f26f1b8d048">TASA_REFRESCO_LENTO</a>&#160;&#160;&#160;200000</td></tr>
+<tr class="memdesc:a0c6c965acdc2ee0b17946f26f1b8d048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constante que representa la tasa de refresco más lenta de los temporizadores Está asociada al funcionamiento de la balanza. Dependerá de la velocidad de llenado del recipiente.  <br /></td></tr>
+<tr class="separator:a0c6c965acdc2ee0b17946f26f1b8d048"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af820116beed060075f527ba3809dff53" id="r_af820116beed060075f527ba3809dff53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af820116beed060075f527ba3809dff53">TASA_REFRESCO_RAPIDO</a>&#160;&#160;&#160;100000</td></tr>
+<tr class="memdesc:af820116beed060075f527ba3809dff53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constante que representa la tasa de refresco más rápida de los temporizadores Está asociado al funcionamiento del motor. Para un correcto control de las válvulas, debe ser al menos dos veces mas rápido que el temporizador relacionado a la celda de carga.  <br /></td></tr>
+<tr class="separator:af820116beed060075f527ba3809dff53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:afaccfed84cd1498a05ea04a65f1209b1" id="r_afaccfed84cd1498a05ea04a65f1209b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afaccfed84cd1498a05ea04a65f1209b1">FuncTimerA</a> (void *param)</td></tr>
+<tr class="memdesc:afaccfed84cd1498a05ea04a65f1209b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recibe la notificacion asociada al temporizador de la celda de carga.  <br /></td></tr>
+<tr class="separator:afaccfed84cd1498a05ea04a65f1209b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5088c3325764095ca222dc78c328f466" id="r_a5088c3325764095ca222dc78c328f466"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5088c3325764095ca222dc78c328f466">FuncTimerB</a> (void *param)</td></tr>
+<tr class="memdesc:a5088c3325764095ca222dc78c328f466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recibe la notificacion asociada al temporizador del control valvular.  <br /></td></tr>
+<tr class="separator:a5088c3325764095ca222dc78c328f466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56e1ff0f71e003f2e08c6ec294528b1" id="r_ab56e1ff0f71e003f2e08c6ec294528b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab56e1ff0f71e003f2e08c6ec294528b1">read_data</a> (uint8_t *data, uint8_t length)</td></tr>
+<tr class="memdesc:ab56e1ff0f71e003f2e08c6ec294528b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recibe y almacena la dosis enviada por el usuario. Al mismo momento cambia el estado de la variable dosis_seteada a true. Además recibe información relacionado al estado de encendido/apagado de la aplicación.  <br /></td></tr>
+<tr class="separator:ab56e1ff0f71e003f2e08c6ec294528b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1961084edf30951f9767eab580e1e87" id="r_ab1961084edf30951f9767eab580e1e87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1961084edf30951f9767eab580e1e87">controlLEDs</a> ()</td></tr>
+<tr class="memdesc:ab1961084edf30951f9767eab580e1e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controla el funcionamiento de la tira NeoPixel, encnediendo proceduralmente los diferentes LEDs con diferentes colores a medida que alcanza la dosis solicitada por el usuario.  <br /></td></tr>
+<tr class="separator:ab1961084edf30951f9767eab580e1e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a630544a7f0a2cc40d8a7fefab7e2fe70" id="r_a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630544a7f0a2cc40d8a7fefab7e2fe70">app_main</a> (void)</td></tr>
+<tr class="separator:a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a2c71ab9d0ddbd9fbf2f0418dce70ceda" id="r_a2c71ab9d0ddbd9fbf2f0418dce70ceda"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c71ab9d0ddbd9fbf2f0418dce70ceda">balanza_task_handle</a> = <a class="el" href="ili9341_8c.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></td></tr>
+<tr class="separator:a2c71ab9d0ddbd9fbf2f0418dce70ceda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e27fe58158fbb8e42189ec7276a63e6" id="r_a2e27fe58158fbb8e42189ec7276a63e6"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e27fe58158fbb8e42189ec7276a63e6">valvula_task_handle</a> = <a class="el" href="ili9341_8c.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></td></tr>
+<tr class="separator:a2e27fe58158fbb8e42189ec7276a63e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6070c1cf58636245d938aaea011ca3d" id="r_ac6070c1cf58636245d938aaea011ca3d"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6070c1cf58636245d938aaea011ca3d">pesoElectronico</a></td></tr>
+<tr class="separator:ac6070c1cf58636245d938aaea011ca3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2d2df3cdb45d328dad087a8841e9132" id="r_ab2d2df3cdb45d328dad087a8841e9132"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2d2df3cdb45d328dad087a8841e9132">dosisRequerida</a></td></tr>
+<tr class="separator:ab2d2df3cdb45d328dad087a8841e9132"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a815a86cd3cb37992a55de9de671f3f94" id="r_a815a86cd3cb37992a55de9de671f3f94"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a815a86cd3cb37992a55de9de671f3f94">dosisInstantanea</a> = 0</td></tr>
+<tr class="separator:a815a86cd3cb37992a55de9de671f3f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a389d9f336e4dade46c3aa3a1fb09688f" id="r_a389d9f336e4dade46c3aa3a1fb09688f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a389d9f336e4dade46c3aa3a1fb09688f">dosis_seteada</a> = false</td></tr>
+<tr class="separator:a389d9f336e4dade46c3aa3a1fb09688f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5332d02d82dacdfb5c6dc01cb428b013" id="r_a5332d02d82dacdfb5c6dc01cb428b013"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5332d02d82dacdfb5c6dc01cb428b013">encendido</a> = false</td></tr>
+<tr class="separator:a5332d02d82dacdfb5c6dc01cb428b013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27e3188294c2df66d975b74a09c001d" id="r_af27e3188294c2df66d975b74a09c001d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af27e3188294c2df66d975b74a09c001d">i</a></td></tr>
+<tr class="separator:af27e3188294c2df66d975b74a09c001d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69ec70215905255b079dbcd26780c370" id="r_a69ec70215905255b079dbcd26780c370"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69ec70215905255b079dbcd26780c370">msg</a> [30]</td></tr>
+<tr class="separator:a69ec70215905255b079dbcd26780c370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentación de «define»</h2>
+<a id="a0c6c965acdc2ee0b17946f26f1b8d048" name="a0c6c965acdc2ee0b17946f26f1b8d048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c6c965acdc2ee0b17946f26f1b8d048">&#9670;&#160;</a></span>TASA_REFRESCO_LENTO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TASA_REFRESCO_LENTO&#160;&#160;&#160;200000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constante que representa la tasa de refresco más lenta de los temporizadores Está asociada al funcionamiento de la balanza. Dependerá de la velocidad de llenado del recipiente. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00055">55</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="af820116beed060075f527ba3809dff53" name="af820116beed060075f527ba3809dff53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af820116beed060075f527ba3809dff53">&#9670;&#160;</a></span>TASA_REFRESCO_RAPIDO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TASA_REFRESCO_RAPIDO&#160;&#160;&#160;100000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constante que representa la tasa de refresco más rápida de los temporizadores Está asociado al funcionamiento del motor. Para un correcto control de las válvulas, debe ser al menos dos veces mas rápido que el temporizador relacionado a la celda de carga. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00062">62</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones</h2>
+<a id="a630544a7f0a2cc40d8a7fefab7e2fe70" name="a630544a7f0a2cc40d8a7fefab7e2fe70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a630544a7f0a2cc40d8a7fefab7e2fe70">&#9670;&#160;</a></span>app_main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void app_main </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00288">288</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="analog__io__mcu_8h_source.html#l00038">ADC_SINGLE</a>, <a class="el" href="analog__io__mcu_8c_source.html#l00045">AnalogInputInit()</a>, <a class="el" href="_proyecto__final_8c_source.html#l00065">balanza_task_handle</a>, <a class="el" href="neopixel__stripe_8h_source.html#l00033">BUILT_IN_RGB_LED_PIN</a>, <a class="el" href="analog__io__mcu_8h_source.html#l00031">CH0</a>, <a class="el" href="_proyecto__final_8c_source.html#l00075">dosisInstantanea</a>, <a class="el" href="_proyecto__final_8c_source.html#l00081">encendido</a>, <a class="el" href="_proyecto__final_8c_source.html#l00094">FuncTimerA()</a>, <a class="el" href="_proyecto__final_8c_source.html#l00104">FuncTimerB()</a>, <a class="el" href="gpio__mcu_8h_source.html#l00061">GPIO_9</a>, <a class="el" href="analog__io__mcu_8h_source.html#l00049">analog_input_config_t::input</a>, <a class="el" href="led_8h_source.html#l00034">LED_1</a>, <a class="el" href="led_8h_source.html#l00033">LED_2</a>, <a class="el" href="led_8c_source.html#l00065">LedOff()</a>, <a class="el" href="led_8c_source.html#l00046">LedOn()</a>, <a class="el" href="led_8c_source.html#l00031">LedsInit()</a>, <a class="el" href="_proyecto__final_8c_source.html#l00087">msg</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00038">NeoPixelInit()</a>, <a class="el" href="ili9341_8c_source.html#l00042">NULL</a>, <a class="el" href="uart__mcu_8h_source.html#l00039">serial_config_t::port</a>, <a class="el" href="_proyecto__final_8c_source.html#l00116">read_data()</a>, <a class="el" href="servo__sg90_8h_source.html#l00032">SERVO_0</a>, <a class="el" href="servo__sg90_8c_source.html#l00033">ServoInit()</a>, <a class="el" href="_proyecto__final_8c_source.html#l00055">TASA_REFRESCO_LENTO</a>, <a class="el" href="_proyecto__final_8c_source.html#l00062">TASA_REFRESCO_RAPIDO</a>, <a class="el" href="timer__mcu_8h_source.html#l00040">timer_config_t::timer</a>, <a class="el" href="timer__mcu_8h_source.html#l00032">TIMER_A</a>, <a class="el" href="timer__mcu_8h_source.html#l00033">TIMER_B</a>, <a class="el" href="timer__mcu_8c_source.html#l00055">TimerInit()</a>, <a class="el" href="timer__mcu_8c_source.html#l00110">TimerStart()</a>, <a class="el" href="uart__mcu_8h_source.html#l00032">UART_PC</a>, <a class="el" href="uart__mcu_8c_source.html#l00107">UartInit()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00066">valvula_task_handle</a>.</p>
+
+</div>
+</div>
+<a id="ab1961084edf30951f9767eab580e1e87" name="ab1961084edf30951f9767eab580e1e87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1961084edf30951f9767eab580e1e87">&#9670;&#160;</a></span>controlLEDs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void controlLEDs </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Controla el funcionamiento de la tira NeoPixel, encnediendo proceduralmente los diferentes LEDs con diferentes colores a medida que alcanza la dosis solicitada por el usuario. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>return </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00149">149</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto__final_8c_source.html#l00078">dosis_seteada</a>, <a class="el" href="_proyecto__final_8c_source.html#l00075">dosisInstantanea</a>, <a class="el" href="_proyecto__final_8c_source.html#l00072">dosisRequerida</a>, <a class="el" href="neopixel__stripe_8h_source.html#l00041">NEOPIXEL_COLOR_GREEN</a>, <a class="el" href="neopixel__stripe_8h_source.html#l00038">NEOPIXEL_COLOR_ORANGE</a>, <a class="el" href="neopixel__stripe_8h_source.html#l00037">NEOPIXEL_COLOR_RED</a>, <a class="el" href="neopixel__stripe_8h_source.html#l00039">NEOPIXEL_COLOR_YELLOW</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00044">NeoPixelAllOff()</a> y <a class="el" href="neopixel__stripe_8c_source.html#l00062">NeoPixelSetPixel()</a>.</p>
+
+</div>
+</div>
+<a id="afaccfed84cd1498a05ea04a65f1209b1" name="afaccfed84cd1498a05ea04a65f1209b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaccfed84cd1498a05ea04a65f1209b1">&#9670;&#160;</a></span>FuncTimerA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FuncTimerA </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Recibe la notificacion asociada al temporizador de la celda de carga. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>return </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00094">94</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto__final_8c_source.html#l00065">balanza_task_handle</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="a5088c3325764095ca222dc78c328f466" name="a5088c3325764095ca222dc78c328f466"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5088c3325764095ca222dc78c328f466">&#9670;&#160;</a></span>FuncTimerB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FuncTimerB </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Recibe la notificacion asociada al temporizador del control valvular. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname"></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>return </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00104">104</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto__final_8c_source.html#l00066">valvula_task_handle</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="ab56e1ff0f71e003f2e08c6ec294528b1" name="ab56e1ff0f71e003f2e08c6ec294528b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56e1ff0f71e003f2e08c6ec294528b1">&#9670;&#160;</a></span>read_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void read_data </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *</td>          <td class="paramname"><span class="paramname"><em>data</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>length</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Recibe y almacena la dosis enviada por el usuario. Al mismo momento cambia el estado de la variable dosis_seteada a true. Además recibe información relacionado al estado de encendido/apagado de la aplicación. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">[data,length]</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd></dd></dl>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00116">116</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto__final_8c_source.html#l00078">dosis_seteada</a>, <a class="el" href="_proyecto__final_8c_source.html#l00072">dosisRequerida</a>, <a class="el" href="_proyecto__final_8c_source.html#l00081">encendido</a> y <a class="el" href="_proyecto__final_8c_source.html#l00084">i</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de variables</h2>
+<a id="a2c71ab9d0ddbd9fbf2f0418dce70ceda" name="a2c71ab9d0ddbd9fbf2f0418dce70ceda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c71ab9d0ddbd9fbf2f0418dce70ceda">&#9670;&#160;</a></span>balanza_task_handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t balanza_task_handle = <a class="el" href="ili9341_8c.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00065">65</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00094">FuncTimerA()</a>.</p>
+
+</div>
+</div>
+<a id="a389d9f336e4dade46c3aa3a1fb09688f" name="a389d9f336e4dade46c3aa3a1fb09688f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a389d9f336e4dade46c3aa3a1fb09688f">&#9670;&#160;</a></span>dosis_seteada</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool dosis_seteada = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00078">78</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00149">controlLEDs()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00116">read_data()</a>.</p>
+
+</div>
+</div>
+<a id="a815a86cd3cb37992a55de9de671f3f94" name="a815a86cd3cb37992a55de9de671f3f94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a815a86cd3cb37992a55de9de671f3f94">&#9670;&#160;</a></span>dosisInstantanea</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t dosisInstantanea = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00075">75</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00149">controlLEDs()</a>.</p>
+
+</div>
+</div>
+<a id="ab2d2df3cdb45d328dad087a8841e9132" name="ab2d2df3cdb45d328dad087a8841e9132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2d2df3cdb45d328dad087a8841e9132">&#9670;&#160;</a></span>dosisRequerida</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t dosisRequerida</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00072">72</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00149">controlLEDs()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00116">read_data()</a>.</p>
+
+</div>
+</div>
+<a id="a5332d02d82dacdfb5c6dc01cb428b013" name="a5332d02d82dacdfb5c6dc01cb428b013"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5332d02d82dacdfb5c6dc01cb428b013">&#9670;&#160;</a></span>encendido</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool encendido = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00081">81</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00116">read_data()</a>.</p>
+
+</div>
+</div>
+<a id="af27e3188294c2df66d975b74a09c001d" name="af27e3188294c2df66d975b74a09c001d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af27e3188294c2df66d975b74a09c001d">&#9670;&#160;</a></span>i</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t i</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00084">84</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="ili9341_8c_source.html#l00260">Fill()</a>, <a class="el" href="gpio__fast__out__mcu_8c_source.html#l00034">GPIOFastInit()</a>, <a class="el" href="hx711_8c_source.html#l00081">HX711_read()</a>, <a class="el" href="hx711_8c_source.html#l00117">HX711_readAverage()</a>, <a class="el" href="ili9341_8c_source.html#l00380">ILI9341DrawChar()</a>, <a class="el" href="ili9341_8c_source.html#l00438">ILI9341DrawInt()</a>, <a class="el" href="ili9341_8c_source.html#l00769">ILI9341DrawPicture()</a>, <a class="el" href="ili9341_8c_source.html#l00300">ILI9341Init()</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00055">NeoPixelAllColor()</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00044">NeoPixelAllOff()</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00106">NeoPixelRainbow()</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00067">NeoPixelSetArray()</a>, <a class="el" href="neopixel__stripe_8c_source.html#l00082">NeoPixelShift()</a>, <a class="el" href="_proyecto__final_8c_source.html#l00116">read_data()</a>, <a class="el" href="hx711_8c_source.html#l00029">shiftIn()</a>, <a class="el" href="uart__mcu_8c_source.html#l00222">UartItoa()</a> y <a class="el" href="ws2812b_8c_source.html#l00340">ws2812bSend()</a>.</p>
+
+</div>
+</div>
+<a id="a69ec70215905255b079dbcd26780c370" name="a69ec70215905255b079dbcd26780c370"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69ec70215905255b079dbcd26780c370">&#9670;&#160;</a></span>msg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char msg[30]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00087">87</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a> y <a class="el" href="uart__mcu_8c_source.html#l00193">UartSendString()</a>.</p>
+
+</div>
+</div>
+<a id="ac6070c1cf58636245d938aaea011ca3d" name="ac6070c1cf58636245d938aaea011ca3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6070c1cf58636245d938aaea011ca3d">&#9670;&#160;</a></span>pesoElectronico</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t pesoElectronico</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00069">69</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+</div>
+</div>
+<a id="a2e27fe58158fbb8e42189ec7276a63e6" name="a2e27fe58158fbb8e42189ec7276a63e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e27fe58158fbb8e42189ec7276a63e6">&#9670;&#160;</a></span>valvula_task_handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t valvula_task_handle = <a class="el" href="ili9341_8c.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto__final_8c_source.html#l00066">66</a> del archivo <a class="el" href="_proyecto__final_8c_source.html">Proyecto_final.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto__final_8c_source.html#l00288">app_main()</a> y <a class="el" href="_proyecto__final_8c_source.html#l00104">FuncTimerB()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_0b63d5beee99855aca9582b8915c442c.html">SANCHEZ-1C-2024</a></li><li class="navelem"><a class="el" href="dir_f42fb320755d43271f4b4ac10273201a.html">firmware</a></li><li class="navelem"><a class="el" href="dir_047f62e0399ab0a43e8e89d03b62a52e.html">projects</a></li><li class="navelem"><a class="el" href="dir_beaeb5545baa11c7b849292cde6022bd.html">Proyecto_final</a></li><li class="navelem"><a class="el" href="dir_8a864cd48116aa3189e8eea129f2e52e.html">main</a></li><li class="navelem"><a class="el" href="_proyecto__final_8c.html">Proyecto_final.c</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+  </ul>
+</div>
+</body>
+</html>

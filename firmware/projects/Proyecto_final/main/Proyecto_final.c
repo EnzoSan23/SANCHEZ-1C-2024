@@ -1,8 +1,25 @@
-/*! @mainpage Blinking
+/*! @mainpage Proyecto final
  *
  * \section genDesc General Description
  *
- * This example makes LED_1, LED_2 and LED_3 blink at different rates, using FreeRTOS tasks.
+ * La aplicacion desarrollada permite obtener una determinada dosis de liquido 
+ * solicitada por el usuario. Esto se realiza mediante el uso de una celda de carga
+ * y un micro servo que controla la apertura y cierre de una valvula que determina
+ * el flujo del liquido hacia el recipiento donde se acumula la dosis.
+ * La aplicacion se desarrolla en la placa ESP32-C6-DevKitC-1 y utiliza una aplicacion
+ * externa para el control de recepcion y envio de dato mediante bluetooth. 
+ * La aplicacion "Bluetooth electronics" funciona como interfaz con el usuario.
+ *
+ * @section hardConn Hardware Connection
+ *
+ * |    Peripheral  |   ESP32   	|
+ * |:--------------:|:--------------|
+ * | 	PIN_NP	 	| 	GPIO_8		|
+ * | 	PIN_CC	 	| 	GPIO_0		|
+ * | 	PIN_MS   	| 	GPIO_9		|
+ * | 	PIN_+5V	 	| 	+5V			|
+ * | 	PIN_GND	 	| 	GND			|
+ * 
  * 
  * @section changelog Changelog
  *
@@ -10,7 +27,7 @@
  * |:----------:|:-----------------------------------------------|
  * | 15/05/2024 | Document creation		                         |
  *
- * @author Albano Peñalva (albano.penalva@uner.edu.ar)
+ * @author Enzo Sanchez (enzosanchez237@gmail.com)
  *
  */
 
@@ -30,29 +47,72 @@
 #include "ble_mcu.h"
 #include "led.h"
 /*==================[macros and definitions]=================================*/
-#define TASA_REFRESCO_LENTO 200000        //depende de la velocidad de llenado del recipiente
+/** @def TASA_REFRESCO_LENTO
+ *  @brief Constante que representa la tasa de refresco más lenta de los temporizadores
+ * Está asociada al funcionamiento de la balanza. 
+ * Dependerá de la velocidad de llenado del recipiente.
+ */
+#define TASA_REFRESCO_LENTO 200000
+/** @def TASA_REFRESCO_RAPIDO
+ *  @brief Constante que representa la tasa de refresco más rápida de los temporizadores
+ * Está asociado al funcionamiento del motor.
+ * Para un correcto control de las válvulas, debe ser al menos dos veces mas rápido que el 
+ * temporizador relacionado a la celda de carga
+ */        
 #define TASA_REFRESCO_RAPIDO 100000
 
 /*==================[internal data definition]===============================*/
 TaskHandle_t balanza_task_handle = NULL;
 TaskHandle_t valvula_task_handle = NULL;
 
-uint8_t base = 10;                  //en g/cm3
-uint16_t pesoElectronico;           //valor medido analogicamente con una balanza 
-uint32_t dosisRequerida;                //en cm3-ml 
+/* variable donde se guarda el valor medido analogicamente con la celda de carga*/                
+uint16_t pesoElectronico;           
+
+/* variable que almacena la dosis establecida por el usuario (en ml)*/
+uint32_t dosisRequerida;
+
+/* variable donde se guarda el valor instantaneo calculado de dosis a partir del peso electronico*/
 uint32_t dosisInstantanea = 0; 
+
+/* variable logico que controla si la dosis fue seteada o no*/
 bool dosis_seteada = false; 
+
+/* variable logica que controla el estado de encendido de la aplicación*/
 bool encendido = false;
 
+/* contador usado para almacenar la dosis recibida por bluetooth*/
 uint8_t i;
-uint8_t j;
+
+/* variable donde se almacenan los mensajes que se envian por bluetooth*/
 char msg[30]; 
 /*==================[internal functions declaration]=========================*/
-void FuncUART(void* param)
-{    
-    
+/** @fn void  FuncTimerA(void* param)
+ *  @brief Recibe la notificacion asociada al temporizador de la celda de carga 
+ * 	@param 
+ *  @return
+*/
+void FuncTimerA(void* param)
+{
+    xTaskNotifyGive(balanza_task_handle);
 }
 
+/** @fn void  FuncTimerB(void* param)
+ *  @brief Recibe la notificacion asociada al temporizador del control valvular
+ * 	@param 
+ *  @return
+*/
+void FuncTimerB(void* param)
+{
+    xTaskNotifyGive(valvula_task_handle);
+}
+
+/** @fn void  read_data(uint8_t * data, uint8_t length)
+ *  @brief Recibe y almacena la dosis enviada por el usuario. Al mismo momento 
+ * cambia el estado de la variable dosis_seteada a true.
+ * Además recibe información relacionado al estado de encendido/apagado de la aplicación
+ * 	@param [data, length]
+ *  @return
+*/
 void read_data(uint8_t * data, uint8_t length)
 {
     if(data[0] == 'O')
@@ -80,6 +140,12 @@ void read_data(uint8_t * data, uint8_t length)
 
 }
 
+/** @fn void  controlLEDs()
+ *  @brief Controla el funcionamiento de la tira NeoPixel, encnediendo proceduralmente los 
+ * diferentes LEDs con diferentes colores a medida que alcanza la dosis solicitada por el usuario
+ * 	@param 
+ *  @return
+*/
 void controlLEDs()
 {
     if ((!dosis_seteada) | (dosisInstantanea == 0 ))
@@ -156,16 +222,14 @@ void controlLEDs()
     }
 }
 
-void FuncTimerA(void* param)
-{
-    xTaskNotifyGive(balanza_task_handle);
-}
-
-void FuncTimerB(void* param)
-{
-    xTaskNotifyGive(valvula_task_handle);
-}
-
+/** @fn static void pesar(void* param)
+ *  @brief Tarea encargada de convertir el valor analogico medido por la celda de carga,
+ * a un valor digital. Luego se lo convierte a su correspondiente de dosis.
+ * Una vez la dosis instantanea alcanza a la dosis requerida, cambia el estado de 
+ * dosis_seteada a false. 
+ * 	@param 
+ *  @return
+*/
 static void pesar(void* param)
 {
     while (true)
@@ -186,6 +250,13 @@ static void pesar(void* param)
     }
 }
 
+/** @fn static void controlValvular(void* param)
+ *  @brief Tarea encargada de controlar la apertura y cierre de valvulas por el movimiento 
+ * del micro servo de acuerdo al valor de dosis instantanea y su cercania a la dosis requerida.
+ * Utilizando la UART, se puede chequear el estado de la válvula.
+ * 	@param 
+ *  @return
+*/
 static void controlValvular(void* param)
 {
     while (true)
@@ -212,7 +283,6 @@ static void controlValvular(void* param)
            
     }
 }
-
 
 /*==================[external functions definition]==========================*/
 void app_main(void){
@@ -250,7 +320,7 @@ void app_main(void){
     serial_config_t puerto_serie = {
         .port = UART_PC,
         .baud_rate = 115200,                //Velocidad de trabajo del puerto serie
-        .func_p = FuncUART,
+        .func_p = NULL,
         .param_p = NULL
     };
     UartInit(&puerto_serie);
